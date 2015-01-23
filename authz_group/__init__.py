@@ -27,7 +27,7 @@ class Group():
             module, attr = getattr(settings, "AUTHZ_GROUP_BACKEND").rsplit('.', 1)
             try:
                 mod = import_module(module)
-            except ImportError, e:
+            except ImportError as e:
                 raise ImproperlyConfigured('Error importing module %s: "%s"' %
                                            (module, e))
             try:
@@ -38,10 +38,10 @@ class Group():
             return authz_module()
         else:
             if settings.DEBUG:
-                print "You should set an AUTHZ_GROUP_BACKEND in you settings.py"
+                print("You should set an AUTHZ_GROUP_BACKEND in you settings.py")
                 return AllOK()
             else:
-                print "You need to set an AUTHZ_GROUP_BACKEND in you settings.py"
+                print("You need to set an AUTHZ_GROUP_BACKEND in you settings.py")
                 return AllFail()
 
 
