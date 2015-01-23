@@ -42,7 +42,7 @@ for dirpath, dirnames, filenames in os.walk("authz_group"):
 
 setup(
     name='AuthZ-Group',
-    version='1.1.2',
+    version='1.1.3',
     description='Group interface and implementations',
     packages = find_packages(),
     install_requires=['Django'],
