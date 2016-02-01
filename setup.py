@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='AuthZ-Group',
-    version='1.1.4',
+    version='1.2.0',
     description='Group interface and implementations',
     install_requires=['Django'],
     packages=find_packages(exclude=["project"]),
