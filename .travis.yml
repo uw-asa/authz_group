@@ -13,8 +13,8 @@ before_script:
   - pip install python-coveralls
   - pip install pep8
   - cp travis-ci/manage.py manage.py
-  - if [[ $TRAVIS_PYTHON_VERSION == 2.6* ]]; then python manage.py syncdb --noinput
-  - if [[ $TRAVIS_PYTHON_VERSION != 2.6* ]]; then python manage.py migrate
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.6* ]]; then python manage.py syncdb --noinput; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != 2.6* ]]; then python manage.py migrate; fi
   - python manage.py syncdb --noinput
 script:
 #  - pep8 authz_group/ --exclude authz_group/test
