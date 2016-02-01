@@ -2,7 +2,12 @@ from authz_group.authz_implementation.all_ok import AllOK
 from authz_group.authz_implementation.all_fail import AllFail
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.importlib import import_module
+try:
+    # Available from python 2.7 onwards...
+    from importlib import import_module
+except Exception:
+    # older versions of Django provides a fallback for python < 2.7
+    from django.utils.importlib import import_module
 
 class Group():
     def __init__(self):
