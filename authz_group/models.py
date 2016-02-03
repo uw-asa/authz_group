@@ -127,7 +127,7 @@ class SolsticeCrowd(models.Model):
     id = models.AutoField(db_column='source_key', primary_key=True)
     creator = models.ForeignKey(Person, db_column='creator_id', related_name='creator_person')
     application = models.CharField(max_length=255, db_column='application')
-    is_visible = models.BooleanField(db_column='is_visible')
+    is_visible = models.BooleanField(db_column='is_visible', default=False)
     name = models.CharField(max_length=255, db_column='name')
     description = models.TextField(db_column='description')
     date_created = models.DateTimeField(db_column='date_created')
