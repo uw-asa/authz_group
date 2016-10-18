@@ -9,6 +9,7 @@ env:
   - DJANGO_VERSION=1.9
   - DJANGO_VERSION=1.10
 install:
+  - echo "0.01" > authz_group/VERSION
   - if [[ $TRAVIS_PYTHON_VERSION == 2.6* ]]; then pip install -r travis-ci/python-2.6-require-django-1.6.txt; fi
   - pip install -e .
 before_script:
@@ -16,6 +17,7 @@ before_script:
   - pip install python-coveralls
   - pip install pep8
   - cp travis-ci/manage.py manage.py
+  - pip install Django==$DJANGO_VERSION
   - if [[ $DJANGO_VERSION == 1.6* ]]; then python manage.py syncdb --noinput; fi
   - if [[ $DJANGO_VERSION != 1.6* ]]; then python manage.py migrate; fi
 script:
@@ -27,3 +29,17 @@ notifications:
   webhooks:
       urls:
         - https://yarn.cac.washington.edu/rest/botalyst/v1/travis-ci
+before_deploy:
+- find authz_group/ -name \*.pyc -exec rm {} \;
+- echo $TRAVIS_TAG > authz_group/VERSION
+deploy:
+  provider: pypi
+  server: https://testpypi.python.org/pypi
+  user: uw-it-aca
+  skip_cleanup: true
+  password:
+    secure: "fF/0HvKhzO15wnXrawuxzfFNVIf248bfyqrTxCADyE+tHPcbhkvRfh35PHklCF04W6vy4nxFkwQpSfiJEzl+BEIO4GIzkk7O5pXIC5EGXjz4dQWX7oagc3iJzwtDJfYgHdmeVnjRAx6mxZGZRiMqjm+mqIZfVmOHww0Juo9qVOE="
+  on:
+    tags: true
+    python: "2.7"
+    condition: 1.10 = $DJANGO_VERSION
