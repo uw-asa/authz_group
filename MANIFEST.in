@@ -1,2 +1,2 @@
-recursive-include authz_group/templates *
-recursive-include authz_group/static *
+include README.md authz_group/VERSION
+recursive-include authz_group *
