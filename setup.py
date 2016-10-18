@@ -3,7 +3,7 @@ import os
 
 install_requires = ['Django']
 if os.environ.get("DJANGO_VERSION"):
-    install_requires = ['Django=%s' % os.environ.get("DJANGO_VERSION")]
+    install_requires = ['Django==%s' % os.environ.get("DJANGO_VERSION")]
 
 setup(
     name='AuthZ-Group',
