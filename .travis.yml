@@ -3,6 +3,12 @@ python:
   - "2.7"
   - "2.6"
   - "3.4"
+env:
+  - DJANGO_VERSION=1.6
+  - DJANGO_VERSION=1.7
+  - DJANGO_VERSION=1.8
+  - DJANGO_VERSION=1.9
+  - DJANGO_VERSION=1.10
 install:
   - if [[ $TRAVIS_PYTHON_VERSION == 2.6* ]]; then pip install -r travis-ci/python-2.6-require-django-1.6.txt; fi
   - pip install -e .
