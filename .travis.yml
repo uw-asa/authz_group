@@ -34,11 +34,11 @@ before_deploy:
 - echo $TRAVIS_TAG > authz_group/VERSION
 deploy:
   provider: pypi
-  server: https://testpypi.python.org/pypi
-  user: uw-it-axdd
+  server: https://pypi.python.org/pypi
+  user: uw-it-aca
   skip_cleanup: true
   password:
-    secure: GfZv0UlI2oW/4V6JYQPaL1BpQLZMsf8Y+ZgOpZiPH/q8+8OM4VwBi7C1ZsmKSsJs77eTR8j2mFbJEJaOLfCgSIQXJwQWbbK5/IHve0DHJbzxyZEh1oz5wyez/DSPDMrd6iSQXVYFBPXc/5uTfKgLccJMMEk2fkGFKN2EPYZRVZY=
+    secure: FeGTi5RuxrwN9SO/XU9K8cDjOXQfw+nbddsprLadrmh3+ShzMml8UHQR6OlC5QCaoXJa7vi9c00lGHsNawdaM9S4CKoOE3znVVpvw9QdoU/KNkzt/vYulxipz8EzNOS99FNBpjlm96bYoCuae15I/btzeDZ8x9/Xv3lc7f+cxOg=
   on:
     tags: true
     python: '2.7'
