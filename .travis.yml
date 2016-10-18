@@ -17,8 +17,8 @@ before_script:
   - pip install python-coveralls
   - pip install pep8
   - cp travis-ci/manage.py manage.py
-  - if [[ $TRAVIS_PYTHON_VERSION == 2.6* ]]; then python manage.py syncdb --noinput; fi
-  - if [[ $TRAVIS_PYTHON_VERSION != 2.6* ]]; then python manage.py migrate; fi
+  - if [[ $DJANGO_VERSION == 1.6* ]]; then python manage.py syncdb --noinput; fi
+  - if [[ $DJANGO_VERSION != 1.6* ]]; then python manage.py migrate; fi
 script:
 #  - pep8 authz_group/ --exclude authz_group/test
   - coverage run --source=authz_group/ manage.py test authz_group
