@@ -1,8 +1,8 @@
-# This class requires the uw's restclients app.  here mainly as an example
-# pacakge
+# This class requires the UW-RestClients-GWS app, here mainly as an example
+# package
 
-from restclients.gws import GWS
-import authz_group.models
+from authz_group.models import Person, GWSCrowdOwner
+from uw_gws import GWS
 
 
 class UWGroupService():
@@ -16,13 +16,13 @@ class UWGroupService():
         return source_id
 
     def group_membership_url(self, group_source_id):
-        return "https://iam-ws.u.washington.edu/group_ws/v1/group/%s/member" % group_source_id
+        return "https://groups.uw.edu/group/%s/member" % group_source_id
 
     @staticmethod
     def get_groups_for_user(login_name):
-        person = authz_group.models.Person.objects.get(login_name = login_name)
+        person = Person.objects.get(login_name=login_name)
 
-        crowd_owners = authz_group.models.GWSCrowdOwner.objects.filter(person_id = person.pk)
+        crowd_owners = GWSCrowdOwner.objects.filter(person_id=person.pk)
 
         crowds = []
         for owner in crowd_owners:
