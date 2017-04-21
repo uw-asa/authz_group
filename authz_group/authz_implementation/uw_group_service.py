@@ -1,7 +1,6 @@
 # This class requires the UW-RestClients-GWS app, here mainly as an example
 # package
 
-from django.conf import settings
 from authz_group.models import Person, GWSCrowdOwner
 from uw_gws import GWS
 
@@ -17,9 +16,7 @@ class UWGroupService():
         return source_id
 
     def group_membership_url(self, group_source_id):
-        host = getattr(settings, 'RESTCLIENTS_GWS_HOST')
-        if host is not None:
-            return '%s/group_sws/v2/group/%s/member' % (host, group_source_id)
+        return "https://groups.uw.edu/group/%s/member" % group_source_id
 
     @staticmethod
     def get_groups_for_user(login_name):
