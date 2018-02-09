@@ -1,11 +1,13 @@
 from django.db import models
 from wsgiref.handlers import format_date_time
 import time
-from authz_group.authz_implementation.solstice import SolsticeCrowdImplementation
+from authz_group.authz_implementation.solstice import (
+    SolsticeCrowdImplementation)
 from django.conf import settings
 
+
 class Person(models.Model):
-    person_id = models.AutoField(primary_key = True, db_column = 'person_id')
+    person_id = models.AutoField(primary_key=True, db_column='person_id')
     login_name = models.TextField(max_length=128, db_column='login_name')
     name = models.TextField(max_length=255, db_column='name')
 
@@ -20,10 +22,12 @@ class Person(models.Model):
     class Meta:
         db_table = 'Person'
 
+
 class Crowd(models.Model):
-    id = models.AutoField(primary_key = True, db_column = 'group_id')
-    source_key = models.CharField(max_length = 100, db_column = 'source_key', db_index=True)
-    source_type = models.CharField(max_length = 100, db_column = 'model_package')
+    id = models.AutoField(primary_key=True, db_column='group_id')
+    source_key = models.CharField(max_length=100, db_column='source_key',
+                                  db_index=True)
+    source_type = models.CharField(max_length=100, db_column='model_package')
 
     owners = models.ManyToManyField(Person, through='CrowdOwner')
 
@@ -34,7 +38,6 @@ class Crowd(models.Model):
             return self._group
 
         raise Exception("Not implemented!")
-
 
     def is_member(self, login_name):
         backend = self.get_backend_for_source(self.source_type)
@@ -75,7 +78,6 @@ class Crowd(models.Model):
 
         return [SolsticeCrowdImplementation]
 
-
     @staticmethod
     def wrap_implementations_in_crowds(implementation_groups):
         wrapped = []
@@ -86,7 +88,8 @@ class Crowd(models.Model):
 
     @staticmethod
     def _wrap_group(group):
-        crowd, created = Crowd.objects.get_or_create(source_key = group.id, source_type = group.get_source_type())
+        crowd, created = Crowd.objects.get_or_create(
+            source_key=group.id, source_type=group.get_source_type())
         crowd._group = group
 
         return crowd
@@ -107,10 +110,13 @@ class Crowd(models.Model):
         db_table = 'GroupWrapper'
         unique_together = ('source_key', 'source_type')
 
+
 class UnknownCrowdBackendException(Exception):
     pass
 
+
 Crowd.register_source_types()
+
 
 class CrowdOwner(models.Model):
     id = models.AutoField(db_column='group_owner_id', primary_key=True)
@@ -125,7 +131,8 @@ class CrowdOwner(models.Model):
 # This is supporting the solstice authz_implemention
 class SolsticeCrowd(models.Model):
     id = models.AutoField(db_column='source_key', primary_key=True)
-    creator = models.ForeignKey(Person, db_column='creator_id', related_name='creator_person')
+    creator = models.ForeignKey(Person, db_column='creator_id',
+                                related_name='creator_person')
     application = models.CharField(max_length=255, db_column='application')
     is_visible = models.BooleanField(db_column='is_visible', default=False)
     name = models.CharField(max_length=255, db_column='name')
@@ -134,14 +141,17 @@ class SolsticeCrowd(models.Model):
     date_modified = models.DateTimeField(db_column='date_modified')
     member_string = models.CharField(max_length=255, db_column='member_str')
 
-    owners = models.ManyToManyField(Person, through='SolsticeCrowdOwner', related_name='sol_crowd_owner')
+    owners = models.ManyToManyField(Person, through='SolsticeCrowdOwner',
+                                    related_name='sol_crowd_owner')
 
     def json_data_structure(self):
         return {
             'name': self.name,
             'description': self.description,
-            'date_modified': format_date_time(time.mktime(self.date_modified.timetuple())),
-            'date_created': format_date_time(time.mktime(self.date_created.timetuple())),
+            'date_modified': format_date_time(time.mktime(
+                self.date_modified.timetuple())),
+            'date_created': format_date_time(time.mktime(
+                self.date_created.timetuple())),
             'member_string': self.member_string,
         }
 
@@ -151,13 +161,16 @@ class SolsticeCrowd(models.Model):
     class Meta:
         db_table = 'Crowd'
 
+
 class SolsticeCrowdMember(models.Model):
-    sol_crowd = models.ForeignKey(SolsticeCrowd, db_column='crowd_id', db_index=True)
+    sol_crowd = models.ForeignKey(SolsticeCrowd, db_column='crowd_id',
+                                  db_index=True)
     person = models.ForeignKey(Person, db_column='person_id', db_index=True)
 
     class Meta:
         db_table = 'PeopleInCrowd'
         unique_together = ('sol_crowd', 'person')
+
 
 class SolsticeCrowdOwner(models.Model):
     id = models.AutoField(db_column='crowd_owner_id', primary_key=True)
@@ -172,7 +185,8 @@ class SolsticeCrowdOwner(models.Model):
 # This is supporting the uw_group_service authz_implemention
 class GWSCrowd(models.Model):
     id = models.IntegerField(db_column='id')
-    source_key = models.CharField(db_column='source_key', primary_key=True, max_length=255)
+    source_key = models.CharField(db_column='source_key', primary_key=True,
+                                  max_length=255)
     name = models.CharField(max_length=255, db_column='name')
     description = models.TextField(db_column='description')
     date_created = models.DateTimeField(db_column='date_created')
@@ -183,8 +197,10 @@ class GWSCrowd(models.Model):
         return {
             'name': self.name,
             'description': self.description,
-            'date_modified': format_date_time(time.mktime(self.date_modified.timetuple())),
-            'date_created': format_date_time(time.mktime(self.date_created.timetuple())),
+            'date_modified': format_date_time(time.mktime(
+                self.date_modified.timetuple())),
+            'date_created': format_date_time(time.mktime(
+                self.date_created.timetuple())),
         }
 
     def get_source_type(self):
@@ -192,6 +208,7 @@ class GWSCrowd(models.Model):
 
     class Meta:
         db_table = 'GWSGroup'
+
 
 class GWSCrowdOwner(models.Model):
     id = models.AutoField(db_column='gws_viewers_id', primary_key=True)
@@ -201,8 +218,3 @@ class GWSCrowdOwner(models.Model):
     class Meta:
         db_table = 'GWSViewers'
         unique_together = ('gws_crowd', 'person_id')
-
-
-
-
-
