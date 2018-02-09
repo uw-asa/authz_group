@@ -1,13 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.template import RequestContext
-from django.shortcuts import render_to_response
-import simplejson as json
+from django.shortcuts import render
 from authz_group.models import Crowd, Person, CrowdOwner
+import json
+
 
 @login_required
 def demo_page(request):
-    return render_to_response("crowds_demo.html", {}, RequestContext(request))
+    return render(request, "crowds_demo.html", {})
+
 
 @login_required
 def group_data(request):
@@ -26,5 +27,5 @@ def group_data(request):
         'source_types': all_backend_sources,
     }
 
-    return HttpResponse(json.dumps(data), { "Content-type": "application/json; charset=utf-8" })
-
+    return HttpResponse(json.dumps(data), {
+        "Content-type": "application/json; charset=utf-8"})

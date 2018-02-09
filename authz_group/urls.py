@@ -1,6 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns('',
+
+urlpatterns = [
     url(r'^$', 'authz_group.views.demo_page'),
     url(r'^/rest/v1/groups$', 'authz_group.views.group_data'),
-)
+]

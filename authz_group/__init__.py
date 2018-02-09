@@ -9,6 +9,7 @@ except Exception:
     # older versions of Django provides a fallback for python < 2.7
     from django.utils.importlib import import_module
 
+
 class Group():
     def __init__(self):
         self._backend = self._get_backend_module()
@@ -29,24 +30,24 @@ class Group():
     def _get_backend_module(self):
         if hasattr(settings, "AUTHZ_GROUP_BACKEND"):
             # This is all taken from django's static file finder
-            module, attr = getattr(settings, "AUTHZ_GROUP_BACKEND").rsplit('.', 1)
+            module, attr = getattr(settings, "AUTHZ_GROUP_BACKEND").rsplit(
+                '.', 1)
             try:
                 mod = import_module(module)
             except ImportError as e:
-                raise ImproperlyConfigured('Error importing module %s: "%s"' %
-                                           (module, e))
+                raise ImproperlyConfigured(
+                    'Error importing module %s: "%s"' % (module, e))
             try:
                 authz_module = getattr(mod, attr)
             except AttributeError:
-                raise ImproperlyConfigured('Module "%s" does not define a '
-                                   '"%s" class' % (module, attr))
+                raise ImproperlyConfigured(
+                    'Module "%s" does not define a "%s" class' % (
+                        module, attr))
             return authz_module()
         else:
             if settings.DEBUG:
-                print("You should set an AUTHZ_GROUP_BACKEND in you settings.py")
+                print("You should set an AUTHZ_GROUP_BACKEND in settings.py")
                 return AllOK()
             else:
-                print("You need to set an AUTHZ_GROUP_BACKEND in you settings.py")
+                print("You need to set an AUTHZ_GROUP_BACKEND in settings.py")
                 return AllFail()
-
-
