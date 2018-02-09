@@ -1,5 +1,6 @@
 """
-This implementation loads groups from django settings.  The structure looks like this:
+This implementation loads groups from django settings.
+The structure looks like this:
 
 AUTHZ_GROUP_BACKEND='authz_group.authz_implementation.settings.Settings'
 
@@ -11,10 +12,11 @@ AUTHZ_GROUP_MEMBERS = {
 """
 from django.conf import settings
 
+
 class Settings():
     def is_member_of_group(self, user_name, group_source_id):
-        groups = settings.AUTHZ_GROUP_MEMBERS
-        if not group_source_id in groups:
+        groups = getattr(settings, 'AUTHZ_GROUP_MEMBERS', {})
+        if group_source_id not in groups:
             return False
 
         members = groups[group_source_id]

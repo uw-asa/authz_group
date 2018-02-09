@@ -23,7 +23,7 @@ setup(
     author_email="aca-it@uw.edu",
     include_package_data=True,
     install_requires=[
-        'Django',
+        'Django>=1.8',
         'setuptools',
     ],
     license='Apache License, Version 2.0',
@@ -36,7 +36,7 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.6',
     ],
 )
 
