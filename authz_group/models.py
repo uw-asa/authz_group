@@ -120,8 +120,8 @@ Crowd.register_source_types()
 
 class CrowdOwner(models.Model):
     id = models.AutoField(db_column='group_owner_id', primary_key=True)
-    group = models.ForeignKey(Crowd, db_column='group_id')
-    person = models.ForeignKey(Person, db_column='person_id', db_index=True)
+    group = models.ForeignKey(Crowd, on_delete=models.CASCADE, db_column='group_id')
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, db_column='person_id', db_index=True)
 
     class Meta:
         db_table = 'GroupOwner'
@@ -131,7 +131,7 @@ class CrowdOwner(models.Model):
 # This is supporting the solstice authz_implemention
 class SolsticeCrowd(models.Model):
     id = models.AutoField(db_column='source_key', primary_key=True)
-    creator = models.ForeignKey(Person, db_column='creator_id',
+    creator = models.ForeignKey(Person, on_delete=models.CASCADE, db_column='creator_id',
                                 related_name='creator_person')
     application = models.CharField(max_length=255, db_column='application')
     is_visible = models.BooleanField(db_column='is_visible', default=False)
@@ -163,9 +163,9 @@ class SolsticeCrowd(models.Model):
 
 
 class SolsticeCrowdMember(models.Model):
-    sol_crowd = models.ForeignKey(SolsticeCrowd, db_column='crowd_id',
+    sol_crowd = models.ForeignKey(SolsticeCrowd, on_delete=models.CASCADE, db_column='crowd_id',
                                   db_index=True)
-    person = models.ForeignKey(Person, db_column='person_id', db_index=True)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, db_column='person_id', db_index=True)
 
     class Meta:
         db_table = 'PeopleInCrowd'
@@ -174,8 +174,8 @@ class SolsticeCrowdMember(models.Model):
 
 class SolsticeCrowdOwner(models.Model):
     id = models.AutoField(db_column='crowd_owner_id', primary_key=True)
-    sol_crowd = models.ForeignKey(SolsticeCrowd, db_column='crowd_id')
-    person = models.ForeignKey(Person, db_column='person_id', db_index=True)
+    sol_crowd = models.ForeignKey(SolsticeCrowd, on_delete=models.CASCADE, db_column='crowd_id')
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, db_column='person_id', db_index=True)
 
     class Meta:
         db_table = 'CrowdOwner'
@@ -212,7 +212,7 @@ class GWSCrowd(models.Model):
 
 class GWSCrowdOwner(models.Model):
     id = models.AutoField(db_column='gws_viewers_id', primary_key=True)
-    gws_crowd = models.ForeignKey(GWSCrowd, db_column='source_key')
+    gws_crowd = models.ForeignKey(GWSCrowd, on_delete=models.CASCADE, db_column='source_key')
     person_id = models.IntegerField(db_column='person_id', db_index=True)
 
     class Meta:
